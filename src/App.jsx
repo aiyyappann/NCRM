@@ -11,7 +11,7 @@ import Support from "./pages/Support";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
-import { mockDataProvider } from "./api/mockData";
+import { supabaseDataProvider } from "./api/supabaseDataProvider";
 
 // Global App Context
 const AppContext = createContext();
@@ -60,7 +60,7 @@ const App = () => {
       toggleMockMode,
       settings,
       updateSettings,
-      dataProvider: mockMode ? mockDataProvider : null
+      dataProvider: supabaseDataProvider
     }}>
       <BrowserRouter>
         <Routes>
