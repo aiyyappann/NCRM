@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../App";
+import { useToast } from "../components/Toast";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend, PointElement, ArcElement, Filler } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 
@@ -7,6 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointEleme
 
 const Reports = () => {
   const { dataProvider } = useAppContext();
+  const { addToast } = useToast();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState('30');
@@ -19,6 +21,7 @@ const Reports = () => {
         setStats(data);
       } catch (error) {
         console.error('Error fetching stats:', error);
+        addToast('Failed to load report data', 'error');
       } finally {
         setLoading(false);
       }

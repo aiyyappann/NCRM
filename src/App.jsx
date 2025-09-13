@@ -11,7 +11,11 @@ import Support from "./pages/Support";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
+import AdminPanel from "./components/AdminPanel";
 import { supabaseDataProvider } from "./api/supabaseDataProvider";
+import { AuthProvider } from "./hooks/useAuth";
+import { ToastProvider } from "./components/Toast";
 
 // Global App Context
 const AppContext = createContext();
@@ -55,32 +59,38 @@ const App = () => {
   };
 
   return (
-    <AppContext.Provider value={{
-      mockMode,
-      toggleMockMode,
-      settings,
-      updateSettings,
-      dataProvider: supabaseDataProvider
-    }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="customers/new" element={<CustomerForm />} />
-            <Route path="customers/:id/edit" element={<CustomerForm />} />
-            <Route path="customers/:id" element={<CustomerDetail />} />
-            <Route path="segments" element={<Segments />} />
-            <Route path="interactions" element={<Interactions />} />
-            <Route path="support" element={<Support />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AppContext.Provider>
+    <AuthProvider>
+      <ToastProvider>
+        <AppContext.Provider value={{
+          mockMode,
+          toggleMockMode,
+          settings,
+          updateSettings,
+          dataProvider: supabaseDataProvider
+        }}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="customers" element={<Customers />} />
+                <Route path="customers/new" element={<CustomerForm />} />
+                <Route path="customers/:id/edit" element={<CustomerForm />} />
+                <Route path="customers/:id" element={<CustomerDetail />} />
+                <Route path="segments" element={<Segments />} />
+                <Route path="interactions" element={<Interactions />} />
+                <Route path="support" element={<Support />} />
+                <Route path="reports" element={<Reports />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="admin" element={<AdminPanel dataProvider={supabaseDataProvider} />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AppContext.Provider>
+      </ToastProvider>
+    </AuthProvider>
   );
 };
 

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useToast } from "../components/Toast";
 
 const Segments = () => {
+  const { addToast } = useToast();
   const [segments, setSegments] = useState([
     {
       id: 1,
@@ -76,11 +78,13 @@ const Segments = () => {
     setSegments(prev => [...prev, segment]);
     setNewSegment({ name: "", rules: [{ field: "status", operator: "eq", value: "" }] });
     setShowBuilder(false);
+    addToast('Segment created successfully', 'success');
   };
 
   const deleteSegment = (id) => {
     if (window.confirm('Are you sure you want to delete this segment?')) {
       setSegments(prev => prev.filter(s => s.id !== id));
+      addToast('Segment deleted successfully', 'success');
     }
   };
 

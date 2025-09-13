@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 const Sidebar = () => {
+  const { isAdmin } = useAuth();
+  
   const menuItems = [
     { path: "/dashboard", label: "Dashboard", icon: "📊" },
     { path: "/customers", label: "Customers", icon: "👥" },
@@ -9,6 +12,10 @@ const Sidebar = () => {
     { path: "/support", label: "Support", icon: "🎧" },
     { path: "/reports", label: "Reports", icon: "📈" },
     { path: "/settings", label: "Settings", icon: "⚙️" }
+  ];
+
+  const adminItems = [
+    { path: "/admin", label: "Admin Panel", icon: "🔧" }
   ];
 
   return (
@@ -30,6 +37,25 @@ const Sidebar = () => {
               {item.label}
             </NavLink>
           ))}
+          
+          {isAdmin() && (
+            <>
+              <hr className="my-3" />
+              <div className="text-muted small mb-2 px-3">Admin</div>
+              {adminItems.map(item => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) => 
+                    `nav-link d-flex align-items-center ${isActive ? 'active' : ''}`
+                  }
+                >
+                  <span className="me-2">{item.icon}</span>
+                  {item.label}
+                </NavLink>
+              ))}
+            </>
+          )}
         </nav>
       </div>
     </div>

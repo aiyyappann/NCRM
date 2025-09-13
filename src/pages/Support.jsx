@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAppContext } from "../App";
+import { useToast } from "../components/Toast";
 import Pagination from "../components/Pagination";
 
 const Support = () => {
   const { dataProvider } = useAppContext();
+  const { addToast } = useToast();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +26,7 @@ const Support = () => {
         setTotalPages(response.totalPages);
       } catch (error) {
         console.error('Error fetching tickets:', error);
+        addToast('Failed to load support tickets', 'error');
       } finally {
         setLoading(false);
       }
@@ -69,8 +72,10 @@ const Support = () => {
       if (selectedTicket && selectedTicket.id === ticketId) {
         setSelectedTicket(prev => ({ ...prev, status: newStatus }));
       }
+      addToast('Ticket status updated successfully', 'success');
     } catch (error) {
       console.error('Error updating ticket:', error);
+      addToast('Failed to update ticket status', 'error');
     }
   };
 

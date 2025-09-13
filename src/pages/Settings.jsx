@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAppContext } from "../App";
+import { useToast } from "../components/Toast";
 
 const Settings = () => {
   const { mockMode, toggleMockMode, settings, updateSettings } = useAppContext();
+  const { addToast } = useToast();
   const [formData, setFormData] = useState(settings);
   const [saved, setSaved] = useState(false);
 
@@ -10,6 +12,7 @@ const Settings = () => {
     e.preventDefault();
     updateSettings(formData);
     setSaved(true);
+    addToast('Settings saved successfully', 'success');
     setTimeout(() => setSaved(false), 3000);
   };
 

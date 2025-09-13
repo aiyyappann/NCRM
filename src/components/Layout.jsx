@@ -1,10 +1,25 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import Toast from "./Toast";
+import { useAuth } from "../hooks/useAuth";
 
 const Layout = () => {
-  const location = useLocation();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
   
   return (
     <div className="d-flex">

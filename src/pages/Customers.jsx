@@ -1,24 +1,31 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../App";
+import { useToast } from "../components/Toast";
 import SearchInput from "../components/SearchInput";
-import Pagination from "../components/Pagination";
 import FilterPanel from "../components/FilterPanel";
 import CustomersTable from "../components/CustomersTable";
 import CustomerCard from "../components/CustomerCard";
+import Pagination from "../components/Pagination";
 
 const Customers = () => {
   const { dataProvider, settings } = useAppContext();
+  const { addToast } = useToast();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState('table');
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filters, setFilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [viewMode, setViewMode] = useState('table');
+  const [filters, setFilters] = useState({});
 
-  const fetchCustomers = useCallback(async () => {
+  const filterOptions = {
+    status: ['Prospect', 'Qualified', 'Active', 'Inactive', 'Churned'],
+    industry: ['Technology', 'Healthcare', 'Finance', 'Education', 'Manufacturing', 'Retail', 'Other']
+  };
+
+  const fetchCustomers = useMemo(() => async () => {
     setLoading(true);
     try {
       const response = await dataProvider.getCustomers(
@@ -29,13 +36,14 @@ const Customers = () => {
       );
       setCustomers(response.data);
       setTotalPages(response.totalPages);
-      setTotal(response.total);
+      setTotalCustomers(response.total);
     } catch (error) {
       console.error('Error fetching customers:', error);
+      addToast('Failed to load customers', 'error');
     } finally {
       setLoading(false);
     }
-  }, [dataProvider, currentPage, settings.pageSize, searchTerm, filters]);
+  }, [dataProvider, currentPage, settings.pageSize, searchTerm, filters, addToast]);
 
   useEffect(() => {
     fetchCustomers();
@@ -59,16 +67,38 @@ const Customers = () => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
       try {
         await dataProvider.deleteCustomer(customerId);
-        fetchCustomers();
+        setCustomers(prev => prev.filter(c => c.id !== customerId));
+        setTotalCustomers(prev => prev - 1);
+        addToast('Customer deleted successfully', 'success');
       } catch (error) {
         console.error('Error deleting customer:', error);
+        addToast('Failed to delete customer', 'error');
       }
     }
   };
 
-  const filterOptions = {
-    status: ['Active', 'Inactive', 'Prospect', 'Qualified'],
-    industry: ['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing', 'Education', 'Real Estate', 'Media']
+  const exportCustomers = () => {
+    const csvContent = [
+      ['Name', 'Email', 'Company', 'Status', 'Industry', 'Value', 'Created Date'].join(','),
+      ...customers.map(customer => [
+        `"${customer.firstName} ${customer.lastName}"`,
+        customer.email,
+        `"${customer.company || ''}"`,
+        customer.status,
+        customer.industry || '',
+        customer.value || 0,
+        new Date(customer.createdAt).toLocaleDateString()
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `customers-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    addToast('Customer data exported successfully', 'success');
   };
 
   return (
@@ -76,7 +106,7 @@ const Customers = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h1 className="h3 mb-1">Customers</h1>
-          <p className="text-muted mb-0">Manage your customer database</p>
+          <p className="text-muted mb-0">Manage your customer relationships</p>
         </div>
         <Link to="/customers/new" className="btn btn-primary">
           ➕ Add Customer
@@ -84,7 +114,7 @@ const Customers = () => {
       </div>
 
       {/* Controls */}
-      <div className="row mb-4">
+      <div className="row mb-4 align-items-center">
         <div className="col-md-4">
           <SearchInput
             placeholder="Search customers..."
@@ -99,16 +129,16 @@ const Customers = () => {
             onFilterChange={handleFilterChange}
           />
         </div>
-        <div className="col-md-2">
-          <div className="btn-group w-100" role="group">
+        <div className="col-md-2 text-end">
+          <div className="btn-group" role="group">
             <button
-              className={`btn ${viewMode === 'table' ? 'btn-primary' : 'btn-outline-primary'}`}
+              className={`btn btn-sm btn-outline-secondary ${viewMode === 'table' ? 'active' : ''}`}
               onClick={() => setViewMode('table')}
             >
               📋
             </button>
             <button
-              className={`btn ${viewMode === 'grid' ? 'btn-primary' : 'btn-outline-primary'}`}
+              className={`btn btn-sm btn-outline-secondary ${viewMode === 'grid' ? 'active' : ''}`}
               onClick={() => setViewMode('grid')}
             >
               ⊞
@@ -117,16 +147,16 @@ const Customers = () => {
         </div>
       </div>
 
-      {/* Results Summary */}
+      {/* Summary */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <small className="text-muted">
-          Showing {customers.length} of {total} customers
-        </small>
+        <div className="text-muted">
+          {loading ? 'Loading...' : `${totalCustomers} customers found`}
+        </div>
         <div className="d-flex gap-2">
-          <button className="btn btn-sm btn-outline-secondary">
+          <button className="btn btn-outline-secondary btn-sm" onClick={exportCustomers}>
             📤 Export
           </button>
-          <button className="btn btn-sm btn-outline-secondary">
+          <button className="btn btn-outline-secondary btn-sm">
             📥 Import
           </button>
         </div>
@@ -144,28 +174,30 @@ const Customers = () => {
           <div className="mb-3" style={{ fontSize: "4rem" }}>👥</div>
           <h4>No customers found</h4>
           <p className="text-muted mb-4">
-            {searchTerm || Object.keys(filters).length > 0 
-              ? "Try adjusting your search or filters" 
-              : "Start by adding your first customer"
+            {searchTerm || Object.keys(filters).length > 0
+              ? "Try adjusting your search or filters"
+              : "Get started by adding your first customer"
             }
           </p>
-          <Link to="/customers/new" className="btn btn-primary">
-            Add Customer
-          </Link>
+          {!searchTerm && Object.keys(filters).length === 0 && (
+            <Link to="/customers/new" className="btn btn-primary">
+              Add First Customer
+            </Link>
+          )}
         </div>
       ) : (
         <>
           {viewMode === 'table' ? (
-            <CustomersTable 
-              customers={customers} 
+            <CustomersTable
+              customers={customers}
               onDelete={handleDeleteCustomer}
             />
           ) : (
             <div className="row">
               {customers.map(customer => (
-                <div key={customer.id} className="col-md-6 col-lg-4 mb-3">
-                  <CustomerCard 
-                    customer={customer} 
+                <div key={customer.id} className="col-lg-4 col-md-6 mb-4">
+                  <CustomerCard
+                    customer={customer}
                     onDelete={handleDeleteCustomer}
                   />
                 </div>
@@ -173,13 +205,15 @@ const Customers = () => {
             </div>
           )}
 
-          <div className="d-flex justify-content-center mt-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
+          {totalPages > 1 && (
+            <div className="d-flex justify-content-center mt-4">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
         </>
       )}
     </div>

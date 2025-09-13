@@ -30,7 +30,11 @@ const SearchInput = ({ placeholder = "Search...", onSearch, value = "", delay = 
         placeholder={placeholder}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        style={{ paddingLeft: "2.5rem", paddingRight: inputValue ? "2.5rem" : "1rem" }}
+        style={{ 
+          paddingLeft: "2.5rem", 
+          paddingRight: inputValue ? "2.5rem" : "1rem",
+          height: "38px" // Match form-select height
+        }}
       />
       <span 
         className="position-absolute top-50 translate-middle-y text-muted"

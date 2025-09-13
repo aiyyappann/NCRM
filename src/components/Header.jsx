@@ -1,9 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useAppContext } from "../App";
+import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
   const location = useLocation();
   const { mockMode } = useAppContext();
+  const { user, signOut, isAdmin } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut();
+  };
   
   const getPageTitle = () => {
     const path = location.pathname;
@@ -14,6 +20,7 @@ const Header = () => {
     if (path.startsWith("/support")) return "Support";
     if (path.startsWith("/reports")) return "Reports";
     if (path.startsWith("/settings")) return "Settings";
+    if (path.startsWith("/admin")) return "Admin Panel";
     return "Page";
   };
 
@@ -37,19 +44,42 @@ const Header = () => {
               Mock Mode
             </span>
           )}
+          
+          <div className="dropdown me-3">
+            <button 
+              className="btn btn-outline-primary btn-sm dropdown-toggle" 
+              type="button" 
+              data-bs-toggle="dropdown"
+            >
+              ⚡ Quick Actions
+            </button>
+            <ul className="dropdown-menu">
+              <li><Link className="dropdown-item" to="/customers/new">Add Customer</Link></li>
+              <li><Link className="dropdown-item" to="/interactions">Log Interaction</Link></li>
+              <li><Link className="dropdown-item" to="/support">Create Ticket</Link></li>
+              <li><hr className="dropdown-divider" /></li>
+              <li><Link className="dropdown-item" to="/reports">View Reports</Link></li>
+            </ul>
+          </div>
+          
           <div className="dropdown">
             <button 
               className="btn btn-outline-secondary dropdown-toggle" 
               type="button" 
               data-bs-toggle="dropdown"
             >
-              👤 Admin
+              👤 {user?.email?.split('@')[0] || 'User'}
             </button>
-            <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#profile">Profile</a></li>
-              <li><a className="dropdown-item" href="#preferences">Preferences</a></li>
+            <ul className="dropdown-menu dropdown-menu-end">
+              <li><Link className="dropdown-item" to="/settings">Settings</Link></li>
+              {isAdmin() && (
+                <>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li><Link className="dropdown-item" to="/admin">🔧 Admin Panel</Link></li>
+                </>
+              )}
               <li><hr className="dropdown-divider" /></li>
-              <li><a className="dropdown-item" href="#logout">Logout</a></li>
+              <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
             </ul>
           </div>
         </div>

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAppContext } from "../App";
+import { useToast } from "../components/Toast";
 import SearchInput from "../components/SearchInput";
 import Pagination from "../components/Pagination";
 
 const Interactions = () => {
   const { dataProvider } = useAppContext();
+  const { addToast } = useToast();
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +27,7 @@ const Interactions = () => {
         setTotalPages(response.totalPages);
       } catch (error) {
         console.error('Error fetching interactions:', error);
+        addToast('Failed to load interactions', 'error');
       } finally {
         setLoading(false);
       }

@@ -41,12 +41,21 @@ const ToastContainer = ({ toasts, onRemove }) => {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="toast-container">
+    <div 
+      className="toast-container position-fixed"
+      style={{
+        top: '50%',
+        right: '20px',
+        transform: 'translateY(-50%)',
+        zIndex: 1055
+      }}
+    >
       {toasts.map(toast => (
         <div 
           key={toast.id}
-          className={`toast show align-items-center text-white bg-${getBootstrapType(toast.type)} border-0`}
+          className={`toast show align-items-center text-white bg-${getBootstrapType(toast.type)} border-0 mb-2`}
           role="alert"
+          style={{ minWidth: '300px' }}
         >
           <div className="d-flex">
             <div className="toast-body">

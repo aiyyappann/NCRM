@@ -1,6 +1,65 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export const supabaseDataProvider = {
+  // Admin functions
+  getAdminSettings: async () => {
+    const { data, error } = await supabase
+      .from('admin_settings')
+      .select('*');
+    
+    if (error) throw new Error(error.message);
+    
+    const settings = {};
+    data.forEach(setting => {
+      settings[setting.setting_key] = setting.setting_value;
+    });
+    return settings;
+  },
+
+  updateAdminSetting: async (key, value) => {
+    const { error } = await supabase
+      .from('admin_settings')
+      .upsert([{
+        setting_key: key,
+        setting_value: value
+      }]);
+    
+    if (error) throw new Error(error.message);
+    return { success: true };
+  },
+
+  getAllUsers: async () => {
+    const { data: users, error: usersError } = await supabase
+      .from('user_roles')
+      .select(`
+        user_id,
+        role,
+        created_at
+      `);
+    
+    if (usersError) throw new Error(usersError.message);
+    
+    // Transform data to include email from auth metadata
+    return users.map(user => ({
+      id: user.user_id,
+      role: user.role,
+      created_at: user.created_at,
+      email: `user-${user.user_id.slice(0, 8)}@example.com` // Mock email since we can't access auth.users
+    }));
+  },
+
+  updateUserRole: async (userId, role) => {
+    const { error } = await supabase
+      .from('user_roles')
+      .upsert([{
+        user_id: userId,
+        role: role
+      }]);
+    
+    if (error) throw new Error(error.message);
+    return { success: true };
+  },
+
   // Customers
   getCustomers: async (page = 1, limit = 10, search = '', filters = {}) => {
     let query = supabase
