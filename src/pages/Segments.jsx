@@ -1,24 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "../components/Toast";
+import { supabase } from "../integrations/supabase/client";
 
 const Segments = () => {
   const { addToast } = useToast();
-  const [segments, setSegments] = useState([
-    {
-      id: 1,
-      name: "VIP Customers",
-      rules: [{ field: "value", operator: "gt", value: "50000" }, { field: "status", operator: "eq", value: "Active" }],
-      count: 12,
-      created: new Date().toISOString()
-    },
-    {
-      id: 2,
-      name: "Technology Prospects",
-      rules: [{ field: "industry", operator: "eq", value: "Technology" }, { field: "status", operator: "eq", value: "Prospect" }],
-      count: 8,
-      created: new Date().toISOString()
-    }
-  ]);
+  const [segments, setSegments] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   const [showBuilder, setShowBuilder] = useState(false);
   const [newSegment, setNewSegment] = useState({
@@ -64,27 +51,84 @@ const Segments = () => {
     }));
   };
 
-  const saveSegment = () => {
-    if (!newSegment.name.trim()) return;
-    
-    const segment = {
-      id: segments.length + 1,
-      name: newSegment.name,
-      rules: newSegment.rules,
-      count: Math.floor(Math.random() * 20) + 1, // Mock count
-      created: new Date().toISOString()
-    };
-    
-    setSegments(prev => [...prev, segment]);
-    setNewSegment({ name: "", rules: [{ field: "status", operator: "eq", value: "" }] });
-    setShowBuilder(false);
-    addToast('Segment created successfully', 'success');
+  useEffect(() => {
+    fetchSegments();
+  }, []);
+
+  const fetchSegments = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('customer_segments')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Parse criteria JSON and convert to rules format
+      const segmentsWithRules = data.map(segment => ({
+        ...segment,
+        rules: segment.criteria?.rules || [],
+        count: Math.floor(Math.random() * 20) + 1 // Mock count for now
+      }));
+      
+      setSegments(segmentsWithRules);
+    } catch (error) {
+      console.error('Error fetching segments:', error);
+      addToast('Failed to load segments', 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteSegment = (id) => {
+  const saveSegment = async () => {
+    if (!newSegment.name.trim()) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('customer_segments')
+        .insert([{
+          name: newSegment.name,
+          description: `Segment with ${newSegment.rules.length} rule${newSegment.rules.length !== 1 ? 's' : ''}`,
+          criteria: { rules: newSegment.rules }
+        }])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      
+      const newSegmentWithRules = {
+        ...data,
+        rules: data.criteria?.rules || [],
+        count: Math.floor(Math.random() * 20) + 1
+      };
+      
+      setSegments(prev => [newSegmentWithRules, ...prev]);
+      setNewSegment({ name: "", rules: [{ field: "status", operator: "eq", value: "" }] });
+      setShowBuilder(false);
+      addToast('Segment created successfully', 'success');
+    } catch (error) {
+      console.error('Error creating segment:', error);
+      addToast('Failed to create segment', 'error');
+    }
+  };
+
+  const deleteSegment = async (id) => {
     if (window.confirm('Are you sure you want to delete this segment?')) {
-      setSegments(prev => prev.filter(s => s.id !== id));
-      addToast('Segment deleted successfully', 'success');
+      try {
+        const { error } = await supabase
+          .from('customer_segments')
+          .delete()
+          .eq('id', id);
+        
+        if (error) throw error;
+        
+        setSegments(prev => prev.filter(s => s.id !== id));
+        addToast('Segment deleted successfully', 'success');
+      } catch (error) {
+        console.error('Error deleting segment:', error);
+        addToast('Failed to delete segment', 'error');
+      }
     }
   };
 
@@ -215,7 +259,13 @@ const Segments = () => {
       )}
 
       {/* Segments List */}
-      {segments.length === 0 ? (
+      {loading ? (
+        <div className="d-flex justify-content-center p-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : segments.length === 0 ? (
         <div className="text-center p-5">
           <div className="mb-3" style={{ fontSize: "4rem" }}>🎯</div>
           <h4>No segments created yet</h4>
