@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import AdminPanel from "./components/AdminPanel";
 import { supabaseDataProvider } from "./api/supabaseDataProvider";
-import { AuthProvider } from "./hooks/useAuth";
+import { AuthProvider } from "./hooks/useAuth.jsx";
 import { ToastProvider } from "./components/Toast";
 
 // Global App Context
