@@ -94,7 +94,7 @@ export const supabaseDataProvider = {
     }
 
     return {
-      data: data || [],
+      data: (data || []).map(transformCustomerFromDb),
       total: count || 0,
       page,
       limit,
@@ -113,7 +113,7 @@ export const supabaseDataProvider = {
       throw new Error(error.message);
     }
     
-    return data;
+    return transformCustomerFromDb(data);
   },
 
   createCustomer: async (customerData) => {
