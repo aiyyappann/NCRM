@@ -23,7 +23,8 @@ const FilterPanel = ({ filters, filterOptions, onFilterChange }) => {
 
   return (
     <div className="d-flex align-items-center gap-2">
-      {Object.entries(filterOptions).map(([key, options]) => (
+      {filterOptions && Object.entries(filterOptions).map(([key, options]) => 
+        key ? (
         <select
           key={key}
           className="form-select form-select-sm"
@@ -36,7 +37,8 @@ const FilterPanel = ({ filters, filterOptions, onFilterChange }) => {
             <option key={option} value={option}>{option}</option>
           ))}
         </select>
-      ))}
+        ) : null
+      )}
       
       {hasActiveFilters && (
         <button
