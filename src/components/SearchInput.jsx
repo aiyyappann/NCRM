@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Search } from "lucide-react";
 
 const SearchInput = ({ placeholder = "Search...", onSearch, value = "", delay = 300 }) => {
   const [inputValue, setInputValue] = useState(value);
@@ -40,7 +41,7 @@ const SearchInput = ({ placeholder = "Search...", onSearch, value = "", delay = 
         className="position-absolute top-50 translate-middle-y text-muted"
         style={{ left: "0.75rem" }}
       >
-        Search
+        <Search size={16} />
       </span>
       {inputValue && (
         <button

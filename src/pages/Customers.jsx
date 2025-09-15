@@ -7,6 +7,7 @@ import FilterPanel from "../components/FilterPanel";
 import CustomersTable from "../components/CustomersTable";
 import CustomerCard from "../components/CustomerCard";
 import Pagination from "../components/Pagination";
+import { Plus, Download, Upload, List, Grid, Users } from "lucide-react";
 
 const Customers = () => {
   const { dataProvider, settings } = useAppContext();
@@ -108,7 +109,8 @@ const Customers = () => {
           <h1 className="h3 mb-1">Customers</h1>
           <p className="text-muted mb-0">Manage your customer relationships</p>
         </div>
-        <Link to="/customers/new" className="btn btn-primary">
+        <Link to="/customers/new" className="btn btn-primary d-flex align-items-center">
+          <Plus size={16} className="me-1" />
           Add Customer
         </Link>
       </div>
@@ -134,14 +136,16 @@ const Customers = () => {
             <button
               className={`btn btn-sm btn-outline-secondary ${viewMode === 'table' ? 'active' : ''}`}
               onClick={() => setViewMode('table')}
+              title="Table View"
             >
-              📋
+              <List size={14} />
             </button>
             <button
               className={`btn btn-sm btn-outline-secondary ${viewMode === 'grid' ? 'active' : ''}`}
               onClick={() => setViewMode('grid')}
+              title="Grid View"
             >
-              ⊞
+              <Grid size={14} />
             </button>
           </div>
         </div>
@@ -153,11 +157,13 @@ const Customers = () => {
           {loading ? 'Loading...' : `${totalCustomers} customers found`}
         </div>
         <div className="d-flex gap-2">
-          <button className="btn btn-outline-secondary btn-sm" onClick={exportCustomers}>
-            📤 Export
+          <button className="btn btn-outline-secondary btn-sm d-flex align-items-center" onClick={exportCustomers}>
+            <Download size={14} className="me-1" />
+            Export
           </button>
-          <button className="btn btn-outline-secondary btn-sm">
-            📥 Import
+          <button className="btn btn-outline-secondary btn-sm d-flex align-items-center">
+            <Upload size={14} className="me-1" />
+            Import
           </button>
         </div>
       </div>
@@ -171,7 +177,9 @@ const Customers = () => {
         </div>
       ) : customers.length === 0 ? (
         <div className="text-center p-5">
-          <div className="mb-3" style={{ fontSize: "4rem" }}>👥</div>
+          <div className="mb-3 d-flex justify-content-center">
+            <Users size={48} className="text-muted" />
+          </div>
           <h4>No customers found</h4>
           <p className="text-muted mb-4">
             {searchTerm || Object.keys(filters).length > 0

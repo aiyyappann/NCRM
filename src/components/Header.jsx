@@ -1,6 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { useAppContext } from "../App";
 import { useAuth } from "../hooks/useAuth";
+import { ChevronDown, User, Settings, Shield, LogOut } from "lucide-react";
 
 const Header = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const Header = () => {
               type="button" 
               data-bs-toggle="dropdown"
             >
+              <ChevronDown size={16} className="me-1" />
               Quick Actions
             </button>
             <ul className="dropdown-menu">
@@ -68,18 +70,28 @@ const Header = () => {
               type="button" 
               data-bs-toggle="dropdown"
             >
-              👤 {user?.email?.split('@')[0] || 'User'}
+              <User size={16} className="me-1" />
+              {user?.email?.split('@')[0] || 'User'}
             </button>
             <ul className="dropdown-menu dropdown-menu-end">
-              <li><Link className="dropdown-item" to="/settings">Settings</Link></li>
+              <li><Link className="dropdown-item d-flex align-items-center" to="/settings">
+                <Settings size={16} className="me-2" />
+                Settings
+              </Link></li>
               {isAdmin() && (
                 <>
                   <li><hr className="dropdown-divider" /></li>
-                  <li><Link className="dropdown-item" to="/admin">🔧 Admin Panel</Link></li>
+                  <li><Link className="dropdown-item d-flex align-items-center" to="/admin">
+                    <Shield size={16} className="me-2" />
+                    Admin Panel
+                  </Link></li>
                 </>
               )}
               <li><hr className="dropdown-divider" /></li>
-              <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
+              <li><button className="dropdown-item d-flex align-items-center" onClick={handleLogout}>
+                <LogOut size={16} className="me-2" />
+                Logout
+              </button></li>
             </ul>
           </div>
         </div>

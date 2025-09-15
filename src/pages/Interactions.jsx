@@ -165,15 +165,13 @@ const Interactions = () => {
 
   const getTypeIcon = (type) => {
     const icons = {
-      'Email': '📧',
-      'Phone': '📞',
-      'Phone': 'Phone',
-      'Email': 'Email',
-      'Meeting': 'Meeting',
-      'Chat': 'Chat',
-      'Social': 'Social'
+      'Phone': Phone,
+      'Email': Mail,
+      'Meeting': Users,
+      'Chat': MessageCircle,
+      'Social': Share2
     };
-    return icons[type] || 'Other';
+    return icons[type] || MessageCircle;
   };
 
   const getOutcomeBadge = (outcome) => {
@@ -200,6 +198,7 @@ const Interactions = () => {
           className="btn btn-primary"
           onClick={() => setShowForm(true)}
         >
+          <Plus size={16} className="me-1" />
           Add Interaction
         </button>
       </div>
@@ -411,9 +410,12 @@ const Interactions = () => {
                   <div className="row align-items-start">
                     <div className="col-md-8">
                       <div className="d-flex align-items-center mb-2">
-                        <span className="me-2" style={{ fontSize: "1.2rem" }}>
-                          {getTypeIcon(interaction.type)}
-                        </span>
+                        <div className="me-2 p-2 bg-light rounded-circle d-flex align-items-center justify-content-center" style={{ minWidth: "32px", height: "32px" }}>
+                          {(() => {
+                            const IconComponent = getTypeIcon(interaction.type);
+                            return <IconComponent size={16} className="text-primary" />;
+                          })()}
+                        </div>
                         <div>
                           <strong>{interaction.subject}</strong>
                           <div className="text-muted small">

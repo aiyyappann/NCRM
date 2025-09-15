@@ -1,28 +1,29 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { Home, Users, Target, MessageCircle, Headphones, BarChart3, Settings, Shield } from "lucide-react";
 
 const Sidebar = () => {
   const { isAdmin } = useAuth();
   
   const menuItems = [
-    { path: "/dashboard", label: "Dashboard", icon: "Dashboard" },
-    { path: "/customers", label: "Customers", icon: "Customers" },
-    { path: "/segments", label: "Segments", icon: "Segments" },
-    { path: "/interactions", label: "Interactions", icon: "Interactions" },
-    { path: "/support", label: "Support", icon: "Support" },
-    { path: "/reports", label: "Reports", icon: "Reports" },
-    { path: "/settings", label: "Settings", icon: "Settings" }
+    { path: "/dashboard", label: "Dashboard", Icon: Home },
+    { path: "/customers", label: "Customers", Icon: Users },
+    { path: "/segments", label: "Segments", Icon: Target },
+    { path: "/interactions", label: "Interactions", Icon: MessageCircle },
+    { path: "/support", label: "Support", Icon: Headphones },
+    { path: "/reports", label: "Reports", Icon: BarChart3 },
+    { path: "/settings", label: "Settings", Icon: Settings }
   ];
 
   const adminItems = [
-    { path: "/admin", label: "Admin Panel", icon: "🔧" }
+    { path: "/admin", label: "Admin Panel", Icon: Shield }
   ];
 
   return (
     <div className="sidebar" style={{ width: "250px" }}>
       <div className="p-3">
         <h4 className="navbar-brand text-primary mb-4">
-          🥜 NutMeg CRM
+          CRM Pro
         </h4>
         <nav className="nav flex-column">
           {menuItems.map(item => (
@@ -32,10 +33,10 @@ const Sidebar = () => {
               className={({ isActive }) => 
                 `nav-link d-flex align-items-center ${isActive ? 'active' : ''}`
               }
-            >
-              <span className="me-2">{item.icon}</span>
-              {item.label}
-            </NavLink>
+             >
+               <item.Icon size={18} className="me-2" />
+               {item.label}
+             </NavLink>
           ))}
           
           {isAdmin() && (
@@ -49,10 +50,10 @@ const Sidebar = () => {
                   className={({ isActive }) => 
                     `nav-link d-flex align-items-center ${isActive ? 'active' : ''}`
                   }
-                >
-                  <span className="me-2">{item.icon}</span>
-                  {item.label}
-                </NavLink>
+                 >
+                   <item.Icon size={18} className="me-2" />
+                   {item.label}
+                 </NavLink>
               ))}
             </>
           )}
