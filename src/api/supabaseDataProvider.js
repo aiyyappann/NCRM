@@ -430,8 +430,13 @@ function transformCustomerFromDb(dbCustomer) {
     createdAt: dbCustomer.created_at,
     updatedAt: dbCustomer.updated_at,
     lastContact: dbCustomer.last_contact,
-    address: dbCustomer.address,
-    tags: dbCustomer.tags
+    address: dbCustomer.address || {
+      street: '',
+      city: '',
+      state: '',
+      zip: ''
+    },
+    tags: dbCustomer.tags || []
   };
 }
 
