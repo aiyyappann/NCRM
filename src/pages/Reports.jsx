@@ -133,7 +133,7 @@ const Reports = () => {
                   className="dropdown-item" 
                   onClick={() => exportData('csv')}
                 >
-                  📊 Export CSV
+                  Export CSV
                 </button>
               </li>
               <li>
@@ -172,7 +172,6 @@ const Reports = () => {
         <div className="col-md-3">
           <div className="card text-center">
             <div className="card-body">
-              <div className="text-info mb-2" style={{ fontSize: "2.5rem" }}>💬</div>
               <h3 className="text-info">{stats?.totalInteractions || 0}</h3>
               <p className="text-muted mb-0">Interactions</p>
             </div>
@@ -290,7 +289,6 @@ const Reports = () => {
                     <div className="fw-semibold">Customer Data (CSV)</div>
                     <small className="text-muted">All customer records with contact info</small>
                   </div>
-                  <span>📊</span>
                 </button>
                 <button 
                   className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -310,7 +308,6 @@ const Reports = () => {
                     <div className="fw-semibold">Interaction History (CSV)</div>
                     <small className="text-muted">All customer interactions</small>
                   </div>
-                  <span>💬</span>
                 </button>
                 <button 
                   className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"

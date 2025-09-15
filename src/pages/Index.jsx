@@ -11,7 +11,7 @@ const Index = () => {
         </p>
         <div className="d-flex gap-3 justify-content-center">
           <Link to="/dashboard" className="btn btn-primary btn-lg">
-            📊 Go to Dashboard
+            Go to Dashboard
           </Link>
           <Link to="/customers" className="btn btn-outline-primary btn-lg">
             👥 View Customers

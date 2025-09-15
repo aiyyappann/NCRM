@@ -40,7 +40,7 @@ const SearchInput = ({ placeholder = "Search...", onSearch, value = "", delay = 
         className="position-absolute top-50 translate-middle-y text-muted"
         style={{ left: "0.75rem" }}
       >
-        🔍
+        Search
       </span>
       {inputValue && (
         <button

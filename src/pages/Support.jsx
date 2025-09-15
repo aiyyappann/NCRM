@@ -162,7 +162,7 @@ const Support = () => {
           <p className="text-muted mb-0">Manage customer support requests and issues</p>
         </div>
         <button className="btn btn-primary">
-          ➕ New Ticket
+          New Ticket
         </button>
       </div>
 

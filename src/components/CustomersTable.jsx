@@ -53,31 +53,31 @@ const CustomersTable = ({ customers, onDelete }) => {
               <td>{customer.company}</td>
               <td>{customer.industry}</td>
               <td>{getStatusBadge(customer.status)}</td>
-              <td>${customer.value.toLocaleString()}</td>
+              <td>₹{customer.value.toLocaleString()}</td>
               <td>{formatDate(customer.lastContact)}</td>
               <td>
                 <div className="btn-group btn-group-sm">
-                  <Link 
-                    to={`/customers/${customer.id}`}
-                    className="btn btn-outline-primary"
-                    title="View Details"
-                  >
-                    👁️
-                  </Link>
-                  <Link 
-                    to={`/customers/${customer.id}/edit`}
-                    className="btn btn-outline-secondary"
-                    title="Edit"
-                  >
-                    ✏️
-                  </Link>
-                  <button
-                    className="btn btn-outline-danger"
-                    onClick={() => onDelete(customer.id)}
-                    title="Delete"
-                  >
-                    🗑️
-                  </button>
+                   <Link 
+                     to={`/customers/${customer.id}`}
+                     className="btn btn-outline-primary"
+                     title="View Details"
+                   >
+                     View
+                   </Link>
+                   <Link 
+                     to={`/customers/${customer.id}/edit`}
+                     className="btn btn-outline-secondary"
+                     title="Edit"
+                   >
+                     Edit
+                   </Link>
+                   <button
+                     className="btn btn-outline-danger"
+                     onClick={() => onDelete(customer.id)}
+                     title="Delete"
+                   >
+                     Delete
+                   </button>
                 </div>
               </td>
             </tr>

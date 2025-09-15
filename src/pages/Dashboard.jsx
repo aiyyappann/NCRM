@@ -66,7 +66,7 @@ const Dashboard = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="h3">Dashboard Overview</h1>
         <button className="btn btn-primary">
-          📊 Generate Report
+          Generate Report
         </button>
       </div>
 

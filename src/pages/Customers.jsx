@@ -109,7 +109,7 @@ const Customers = () => {
           <p className="text-muted mb-0">Manage your customer relationships</p>
         </div>
         <Link to="/customers/new" className="btn btn-primary">
-          ➕ Add Customer
+          Add Customer
         </Link>
       </div>
 

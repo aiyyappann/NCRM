@@ -244,7 +244,7 @@ const CustomerForm = () => {
                     </select>
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label">Customer Value ($)</label>
+                    <label className="form-label">Customer Value (₹)</label>
                     <input
                       type="number"
                       className="form-control"
@@ -334,7 +334,7 @@ const CustomerForm = () => {
                         Saving...
                       </>
                     ) : (
-                      <>💾 {isEditing ? 'Update' : 'Create'} Customer</>
+                      <>{isEditing ? 'Update' : 'Create'} Customer</>
                     )}
                   </button>
                 </div>
@@ -346,21 +346,21 @@ const CustomerForm = () => {
         <div className="col-lg-4">
           <div className="card">
             <div className="card-header">
-              <h6 className="mb-0">💡 Tips</h6>
+              <h6 className="mb-0">Tips</h6>
             </div>
             <div className="card-body">
               <ul className="list-unstyled mb-0">
                 <li className="mb-2">
-                  <small>✅ Fill in all required fields marked with *</small>
+                  <small>• Fill in all required fields marked with *</small>
                 </li>
                 <li className="mb-2">
-                  <small>📧 Use a valid email address for notifications</small>
+                  <small>• Use a valid email address for notifications</small>
                 </li>
                 <li className="mb-2">
-                  <small>🏷️ Tags help organize and segment customers</small>
+                  <small>• Tags help organize and segment customers</small>
                 </li>
                 <li className="mb-0">
-                  <small>💰 Customer value helps prioritize relationships</small>
+                  <small>• Customer value helps prioritize relationships</small>
                 </li>
               </ul>
             </div>

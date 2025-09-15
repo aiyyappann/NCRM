@@ -5,13 +5,13 @@ const Sidebar = () => {
   const { isAdmin } = useAuth();
   
   const menuItems = [
-    { path: "/dashboard", label: "Dashboard", icon: "📊" },
-    { path: "/customers", label: "Customers", icon: "👥" },
-    { path: "/segments", label: "Segments", icon: "🎯" },
-    { path: "/interactions", label: "Interactions", icon: "💬" },
-    { path: "/support", label: "Support", icon: "🎧" },
-    { path: "/reports", label: "Reports", icon: "📈" },
-    { path: "/settings", label: "Settings", icon: "⚙️" }
+    { path: "/dashboard", label: "Dashboard", icon: "Dashboard" },
+    { path: "/customers", label: "Customers", icon: "Customers" },
+    { path: "/segments", label: "Segments", icon: "Segments" },
+    { path: "/interactions", label: "Interactions", icon: "Interactions" },
+    { path: "/support", label: "Support", icon: "Support" },
+    { path: "/reports", label: "Reports", icon: "Reports" },
+    { path: "/settings", label: "Settings", icon: "Settings" }
   ];
 
   const adminItems = [

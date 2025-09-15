@@ -143,7 +143,7 @@ const Segments = () => {
           className="btn btn-primary"
           onClick={() => setShowBuilder(true)}
         >
-          ➕ Create Segment
+          Create Segment
         </button>
       </div>
 
@@ -229,7 +229,7 @@ const Segments = () => {
                   className="btn btn-outline-primary btn-sm mb-3"
                   onClick={addRule}
                 >
-                  ➕ Add Rule
+                  Add Rule
                 </button>
 
                 <div className="alert alert-info">
@@ -267,7 +267,6 @@ const Segments = () => {
         </div>
       ) : segments.length === 0 ? (
         <div className="text-center p-5">
-          <div className="mb-3" style={{ fontSize: "4rem" }}>🎯</div>
           <h4>No segments created yet</h4>
           <p className="text-muted mb-4">Create your first customer segment to organize your customer base</p>
           <button 

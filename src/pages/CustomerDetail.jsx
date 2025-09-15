@@ -151,7 +151,7 @@ const CustomerDetail = () => {
                         <strong>Industry:</strong> {customer.industry}
                       </div>
                       <div className="mb-2">
-                        <strong>Value:</strong> ${customer.value.toLocaleString()}
+                        <strong>Value:</strong> ₹{customer.value.toLocaleString()}
                       </div>
                     </div>
                   </div>
@@ -175,7 +175,6 @@ const CustomerDetail = () => {
                 <div>
                   {interactions.length === 0 ? (
                     <div className="text-center p-4">
-                      <div className="mb-3" style={{ fontSize: "3rem" }}>💬</div>
                       <p className="text-muted">No interactions yet</p>
                     </div>
                   ) : (
@@ -232,7 +231,6 @@ const CustomerDetail = () => {
 
               {activeTab === 'activity' && (
                 <div className="text-center p-4">
-                  <div className="mb-3" style={{ fontSize: "3rem" }}>📊</div>
                   <p className="text-muted">Activity timeline coming soon</p>
                 </div>
               )}
@@ -278,7 +276,7 @@ const CustomerDetail = () => {
               </div>
               <div className="mb-0">
                 <div className="small text-muted">Customer Value</div>
-                <div className="text-primary fw-bold">${customer.value.toLocaleString()}</div>
+                <div className="text-primary fw-bold">₹{customer.value.toLocaleString()}</div>
               </div>
             </div>
           </div>

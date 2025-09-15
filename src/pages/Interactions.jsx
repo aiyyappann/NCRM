@@ -167,11 +167,13 @@ const Interactions = () => {
     const icons = {
       'Email': '📧',
       'Phone': '📞',
-      'Meeting': '🤝',
-      'Chat': '💬',
-      'Social': '📱'
+      'Phone': 'Phone',
+      'Email': 'Email',
+      'Meeting': 'Meeting',
+      'Chat': 'Chat',
+      'Social': 'Social'
     };
-    return icons[type] || '💬';
+    return icons[type] || 'Other';
   };
 
   const getOutcomeBadge = (outcome) => {
@@ -198,7 +200,7 @@ const Interactions = () => {
           className="btn btn-primary"
           onClick={() => setShowForm(true)}
         >
-          ➕ Add Interaction
+          Add Interaction
         </button>
       </div>
 
@@ -391,7 +393,6 @@ const Interactions = () => {
         </div>
       ) : interactions.length === 0 ? (
         <div className="text-center p-5">
-          <div className="mb-3" style={{ fontSize: "4rem" }}>💬</div>
           <h4>No interactions found</h4>
           <p className="text-muted mb-4">Start tracking customer interactions to build better relationships</p>
           <button 

@@ -86,7 +86,7 @@ const Settings = () => {
 
                 <div className="d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary">
-                    {saved ? '✅ Saved!' : '💾 Save Settings'}
+                    {saved ? 'Saved!' : 'Save Settings'}
                   </button>
                 </div>
               </form>
@@ -119,14 +119,13 @@ const Settings = () => {
               
               <div className="mt-3 p-3 bg-light rounded">
                 <div className="d-flex align-items-center mb-2">
-                  <span className="me-2">ℹ️</span>
                   <strong>Mock Mode Benefits</strong>
                 </div>
                 <ul className="list-unstyled mb-0 small">
-                  <li>✅ Works offline</li>
-                  <li>✅ No API rate limits</li>
-                  <li>✅ Safe for testing</li>
-                  <li>✅ Fast development</li>
+                  <li>• Works offline</li>
+                  <li>• No API rate limits</li>
+                  <li>• Safe for testing</li>
+                  <li>• Fast development</li>
                 </ul>
               </div>
             </div>
@@ -136,7 +135,7 @@ const Settings = () => {
         <div className="col-lg-4">
           <div className="card">
             <div className="card-header">
-              <h6 className="mb-0">🔧 System Info</h6>
+              <h6 className="mb-0">System Info</h6>
             </div>
             <div className="card-body">
               <div className="mb-3">
@@ -160,21 +159,21 @@ const Settings = () => {
 
           <div className="card mt-3">
             <div className="card-header">
-              <h6 className="mb-0">📚 Help & Support</h6>
+              <h6 className="mb-0">Help & Support</h6>
             </div>
             <div className="card-body">
               <div className="list-group list-group-flush">
                 <a href="#" className="list-group-item list-group-item-action border-0 px-0">
-                  📖 User Guide
+                  User Guide
                 </a>
                 <a href="#" className="list-group-item list-group-item-action border-0 px-0">
-                  🎥 Video Tutorials
+                  Video Tutorials
                 </a>
                 <a href="#" className="list-group-item list-group-item-action border-0 px-0">
-                  💬 Contact Support
+                  Contact Support
                 </a>
                 <a href="#" className="list-group-item list-group-item-action border-0 px-0">
-                  🐛 Report Bug
+                  Report Bug
                 </a>
               </div>
             </div>

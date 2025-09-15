@@ -51,7 +51,7 @@ const CustomerCard = ({ customer, onDelete }) => {
         <div className="row mb-3">
           <div className="col-6">
             <div className="small text-muted mb-1">Value</div>
-            <div className="fw-semibold text-primary">${customer.value.toLocaleString()}</div>
+            <div className="fw-semibold text-primary">₹{customer.value.toLocaleString()}</div>
           </div>
           <div className="col-6">
             <div className="small text-muted mb-1">Last Contact</div>

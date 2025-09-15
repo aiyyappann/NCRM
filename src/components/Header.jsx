@@ -51,7 +51,7 @@ const Header = () => {
               type="button" 
               data-bs-toggle="dropdown"
             >
-              ⚡ Quick Actions
+              Quick Actions
             </button>
             <ul className="dropdown-menu">
               <li><Link className="dropdown-item" to="/customers/new">Add Customer</Link></li>
