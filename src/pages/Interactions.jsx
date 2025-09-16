@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { supabase } from "../integrations/supabase/client";
 import Pagination from "../components/Pagination";
+import { Plus, Phone, Mail, Users, MessageCircle, Share2 } from "lucide-react";
 
 const Interactions = () => {
   const { addToast } = useToast();
