@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Users } from "lucide-react";
 
 const Index = () => {
   return (
@@ -14,7 +15,8 @@ const Index = () => {
             Go to Dashboard
           </Link>
           <Link to="/customers" className="btn btn-outline-primary btn-lg">
-            👥 View Customers
+            <Users size={18} className="me-2" />
+            View Customers
           </Link>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useToast } from "./Toast";
+import { Users } from "lucide-react";
 
 const AdminPanel = ({ dataProvider }) => {
   const { addToast } = useToast();
@@ -245,7 +246,8 @@ const AdminPanel = ({ dataProvider }) => {
             className={`nav-link ${activeTab === 'users' ? 'active' : ''}`}
             onClick={() => setActiveTab('users')}
           >
-            👥 Users
+            <Users size={16} className="me-1" />
+            Users
           </button>
         </li>
       </ul>

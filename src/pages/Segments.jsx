@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { supabase } from "../integrations/supabase/client";
+import { Download } from "lucide-react";
 
 const Segments = () => {
   const { addToast } = useToast();
@@ -328,7 +329,8 @@ const Segments = () => {
                 </div>
                 <div className="card-footer bg-transparent">
                   <button className="btn btn-outline-primary btn-sm w-100">
-                    📤 Export Customers
+                    <Download size={14} className="me-1" />
+                    Export Customers
                   </button>
                 </div>
               </div>

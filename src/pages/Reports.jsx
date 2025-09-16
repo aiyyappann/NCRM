@@ -3,6 +3,7 @@ import { useAppContext } from "../App";
 import { useToast } from "../components/Toast";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend, PointElement, ArcElement, Filler } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
+import { Users, IndianRupee, MessageCircle, Headphones, Download, FileText } from "lucide-react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend, Filler);
 
@@ -48,15 +49,18 @@ const Reports = () => {
   };
 
   const customerStatusData = {
-    labels: ['Active', 'Inactive', 'Prospect', 'Qualified'],
+    labels: ['Active', 'Inactive', 'Prospect', 'Qualified', 'Churned'],
     datasets: [
       {
-        data: [25, 8, 12, 5],
+        data: stats?.statusCounts ? 
+          [stats.statusCounts.Active, stats.statusCounts.Inactive, stats.statusCounts.Prospect, stats.statusCounts.Qualified, stats.statusCounts.Churned] :
+          [25, 8, 12, 5, 2],
         backgroundColor: [
           'rgba(70, 123, 244, 0.8)',
           'rgba(108, 117, 125, 0.8)',
           'rgba(255, 193, 7, 0.8)',
-          'rgba(13, 202, 240, 0.8)'
+          'rgba(13, 202, 240, 0.8)',
+          'rgba(220, 53, 69, 0.8)'
         ],
         borderWidth: 0
       }
@@ -64,11 +68,11 @@ const Reports = () => {
   };
 
   const revenueData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: stats?.monthlyRevenue ? Object.keys(stats.monthlyRevenue) : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
       {
-        label: 'Revenue ($)',
-        data: [65000, 75000, 80000, 85000, 90000, 95000],
+        label: 'Revenue (₹)',
+        data: stats?.monthlyRevenue ? Object.values(stats.monthlyRevenue) : [65000, 75000, 80000, 85000, 90000, 95000],
         borderColor: 'rgb(70, 123, 244)',
         backgroundColor: 'rgba(70, 123, 244, 0.1)',
         tension: 0.4,
@@ -82,7 +86,9 @@ const Reports = () => {
     datasets: [
       {
         label: 'Interactions',
-        data: [20, 15, 8, 12, 5],
+        data: stats?.interactionCounts ? 
+          [stats.interactionCounts.Email, stats.interactionCounts.Phone, stats.interactionCounts.Meeting, stats.interactionCounts.Chat, stats.interactionCounts.Social] :
+          [20, 15, 8, 12, 5],
         backgroundColor: 'rgba(70, 123, 244, 0.8)',
         borderColor: 'rgb(70, 123, 244)',
         borderWidth: 1
@@ -125,7 +131,8 @@ const Reports = () => {
               type="button" 
               data-bs-toggle="dropdown"
             >
-              📤 Export
+              <Download size={16} className="me-1" />
+              Export
             </button>
             <ul className="dropdown-menu">
               <li>
@@ -141,7 +148,8 @@ const Reports = () => {
                   className="dropdown-item" 
                   onClick={() => exportData('pdf')}
                 >
-                  📋 Export PDF
+                  <FileText size={14} className="me-1" />
+                  Export PDF
                 </button>
               </li>
             </ul>
@@ -154,7 +162,9 @@ const Reports = () => {
         <div className="col-md-3">
           <div className="card text-center">
             <div className="card-body">
-              <div className="text-primary mb-2" style={{ fontSize: "2.5rem" }}>👥</div>
+              <div className="text-primary mb-2">
+                <Users size={40} />
+              </div>
               <h3 className="text-primary">{stats?.totalCustomers || 0}</h3>
               <p className="text-muted mb-0">Total Customers</p>
             </div>
@@ -163,8 +173,10 @@ const Reports = () => {
         <div className="col-md-3">
           <div className="card text-center">
             <div className="card-body">
-              <div className="text-success mb-2" style={{ fontSize: "2.5rem" }}>💰</div>
-              <h3 className="text-success">${stats?.totalRevenue?.toLocaleString() || '0'}</h3>
+              <div className="text-success mb-2">
+                <IndianRupee size={40} />
+              </div>
+              <h3 className="text-success">₹{stats?.totalRevenue?.toLocaleString() || '0'}</h3>
               <p className="text-muted mb-0">Total Revenue</p>
             </div>
           </div>
@@ -172,6 +184,9 @@ const Reports = () => {
         <div className="col-md-3">
           <div className="card text-center">
             <div className="card-body">
+              <div className="text-info mb-2">
+                <MessageCircle size={40} />
+              </div>
               <h3 className="text-info">{stats?.totalInteractions || 0}</h3>
               <p className="text-muted mb-0">Interactions</p>
             </div>
@@ -180,7 +195,9 @@ const Reports = () => {
         <div className="col-md-3">
           <div className="card text-center">
             <div className="card-body">
-              <div className="text-warning mb-2" style={{ fontSize: "2.5rem" }}>🎧</div>
+              <div className="text-warning mb-2">
+                <Headphones size={40} />
+              </div>
               <h3 className="text-warning">{stats?.openTickets || 0}</h3>
               <p className="text-muted mb-0">Open Tickets</p>
             </div>
@@ -211,7 +228,7 @@ const Reports = () => {
                       beginAtZero: true,
                       ticks: {
                         callback: function(value) {
-                          return '$' + value.toLocaleString();
+                          return '₹' + value.toLocaleString();
                         }
                       }
                     }
@@ -298,7 +315,7 @@ const Reports = () => {
                     <div className="fw-semibold">Analytics Report (PDF)</div>
                     <small className="text-muted">Comprehensive analytics report</small>
                   </div>
-                  <span>📋</span>
+                  <FileText size={16} />
                 </button>
                 <button 
                   className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
@@ -317,7 +334,7 @@ const Reports = () => {
                     <div className="fw-semibold">Support Tickets (CSV)</div>
                     <small className="text-muted">Support ticket data</small>
                   </div>
-                  <span>🎧</span>
+                  <Headphones size={16} />
                 </button>
               </div>
             </div>

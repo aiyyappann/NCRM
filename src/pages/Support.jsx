@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useToast } from "../components/Toast";
 import { supabase } from "../integrations/supabase/client";
 import Pagination from "../components/Pagination";
+import { Headphones } from "lucide-react";
 
 const Support = () => {
   const { addToast } = useToast();
@@ -220,7 +221,9 @@ const Support = () => {
             </div>
           ) : tickets.length === 0 ? (
             <div className="text-center p-5">
-              <div className="mb-3" style={{ fontSize: "4rem" }}>🎧</div>
+              <div className="mb-3">
+                <Headphones size={64} className="text-muted" />
+              </div>
               <h4>No tickets found</h4>
               <p className="text-muted mb-4">All caught up! No support tickets match your filters.</p>
             </div>
@@ -400,7 +403,9 @@ const Support = () => {
           ) : (
             <div className="card">
               <div className="card-body text-center py-5">
-                <div className="mb-3" style={{ fontSize: "3rem" }}>🎧</div>
+                <div className="mb-3">
+                  <Headphones size={48} className="text-muted" />
+                </div>
                 <h5>Select a ticket</h5>
                 <p className="text-muted mb-0">Choose a ticket from the list to view details and manage the conversation.</p>
               </div>

@@ -1,5 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { Home, Users } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -22,10 +23,12 @@ const NotFound = () => {
         </p>
         <div className="d-flex gap-2 justify-content-center">
           <Link to="/dashboard" className="btn btn-primary">
-            🏠 Go to Dashboard
+            <Home size={16} className="me-1" />
+            Go to Dashboard
           </Link>
           <Link to="/customers" className="btn btn-outline-primary">
-            👥 View Customers
+            <Users size={16} className="me-1" />
+            View Customers
           </Link>
         </div>
       </div>

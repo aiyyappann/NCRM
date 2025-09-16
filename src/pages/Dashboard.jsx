@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAppContext } from "../App";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip, Legend, PointElement, Filler } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
+import { Users, CheckCircle, Headphones, IndianRupee } from "lucide-react";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 
@@ -36,11 +37,11 @@ const Dashboard = () => {
   }
 
   const chartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    labels: stats?.monthlyCustomers ? Object.keys(stats.monthlyCustomers) : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
     datasets: [
       {
         label: 'Customers',
-        data: [12, 19, 15, 25, 22, 30],
+        data: stats?.monthlyCustomers ? Object.values(stats.monthlyCustomers) : [12, 19, 15, 25, 22, 30],
         backgroundColor: 'rgba(70, 123, 244, 0.5)',
         borderColor: 'rgb(70, 123, 244)',
         borderWidth: 1,
@@ -49,11 +50,11 @@ const Dashboard = () => {
   };
 
   const lineChartData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    labels: stats?.monthlyRevenue ? Object.keys(stats.monthlyRevenue) : ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
     datasets: [
       {
-        label: 'Revenue',
-        data: [12000, 19000, 15000, 25000],
+        label: 'Revenue (₹)',
+        data: stats?.monthlyRevenue ? Object.values(stats.monthlyRevenue) : [12000, 19000, 15000, 25000],
         fill: false,
         borderColor: 'rgb(70, 123, 244)',
         tension: 0.1,
@@ -81,7 +82,7 @@ const Dashboard = () => {
                   <div className="kpi-value">{stats?.totalCustomers || 0}</div>
                 </div>
                 <div className="align-self-center">
-                  <span style={{ fontSize: "2rem" }}>👥</span>
+                  <Users size={32} className="text-primary" />
                 </div>
               </div>
             </div>
@@ -97,7 +98,7 @@ const Dashboard = () => {
                   <div className="kpi-value">{stats?.activeCustomers || 0}</div>
                 </div>
                 <div className="align-self-center">
-                  <span style={{ fontSize: "2rem" }}>✅</span>
+                  <CheckCircle size={32} className="text-success" />
                 </div>
               </div>
             </div>
@@ -113,7 +114,7 @@ const Dashboard = () => {
                   <div className="kpi-value">{stats?.openTickets || 0}</div>
                 </div>
                 <div className="align-self-center">
-                  <span style={{ fontSize: "2rem" }}>🎧</span>
+                  <Headphones size={32} className="text-warning" />
                 </div>
               </div>
             </div>
@@ -126,10 +127,10 @@ const Dashboard = () => {
               <div className="d-flex justify-content-between">
                 <div>
                   <h6 className="card-subtitle mb-2 text-muted">Total Revenue</h6>
-                  <div className="kpi-value">${stats?.totalRevenue?.toLocaleString() || '0'}</div>
+                  <div className="kpi-value">₹{stats?.totalRevenue?.toLocaleString() || '0'}</div>
                 </div>
                 <div className="align-self-center">
-                  <span style={{ fontSize: "2rem" }}>💰</span>
+                  <IndianRupee size={32} className="text-success" />
                 </div>
               </div>
             </div>

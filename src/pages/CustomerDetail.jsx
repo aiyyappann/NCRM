@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useAppContext } from "../App";
+import { Headphones } from "lucide-react";
 
 const CustomerDetail = () => {
   const { id } = useParams();
@@ -201,7 +202,9 @@ const CustomerDetail = () => {
                 <div>
                   {tickets.length === 0 ? (
                     <div className="text-center p-4">
-                      <div className="mb-3" style={{ fontSize: "3rem" }}>🎧</div>
+                      <div className="mb-3">
+                        <Headphones size={48} className="text-muted" />
+                      </div>
                       <p className="text-muted">No support tickets</p>
                     </div>
                   ) : (
